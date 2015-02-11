@@ -42,7 +42,7 @@
 
 另外，falcon-agent提供了一个proxy-gateway，用户可以方便的通过http接口，push数据到本机的gateway，gateway会帮忙高效率的转发到server端。
 
-falcon-agent，可以在我们的github上找到 （https://github.com/open-falcon/agent）
+falcon-agent，可以在我们的github上找到 https://github.com/open-falcon/agent
 
 # Data model
 ----
