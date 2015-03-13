@@ -10,15 +10,15 @@
 
 # Highlights and features
 ----
-- **强大灵活的数据采集**：自动发现，支持falcon-agent、snmp、支持用户主动push、用户自定义插件支持、opentsdb data model like（timestamp、endpoint、metric、key-value tags）
-- **水平扩展能力**：支持每个周期上亿次的数据采集、告警判定、历史数据存储和查询
-- **高效率的告警策略管理**：高效的portal、支持策略模板、模板继承和覆盖、多种告警方式、支持callback调用
-- **人性化的告警设置**：最大告警次数、告警级别、告警恢复通知、告警暂停、不同时段不同阈值、支持维护周期
-- **高效率的graph组件**：单机支撑200万metric的上报、归档、存储（周期为1分钟）
-- **高效的历史数据query组件**：采用rrdtool的数据归档策略，秒级返回上百个metric一年的历史数据
-- **dashboard**：多维度的数据展示，用户自定义Screen
-- **高可用**：整个系统无核心单点，易运维，易部署，可水平扩展
-- **开发语言**： 整个系统的后端，全部golang编写，portal和dashboard使用python编写。
+- 强大灵活的数据采集：自动发现，支持falcon-agent、snmp、支持用户主动push、用户自定义插件支持、opentsdb data model like（timestamp、endpoint、metric、key-value tags）
+- 水平扩展能力：支持每个周期上亿次的数据采集、告警判定、历史数据存储和查询
+- 高效率的告警策略管理：高效的portal、支持策略模板、模板继承和覆盖、多种告警方式、支持callback调用
+- 人性化的告警设置：最大告警次数、告警级别、告警恢复通知、告警暂停、不同时段不同阈值、支持维护周期
+- 高效率的graph组件：单机支撑200万metric的上报、归档、存储（周期为1分钟）
+- 高效的历史数据query组件：采用rrdtool的数据归档策略，秒级返回上百个metric一年的历史数据
+- dashboard：多维度的数据展示，用户自定义Screen
+- 高可用：整个系统无核心单点，易运维，易部署，可水平扩展
+- 开发语言： 整个系统的后端，全部golang编写，portal和dashboard使用python编写。
 
 # Architecture
 ----
@@ -42,15 +42,15 @@
 
 另外，falcon-agent提供了一个proxy-gateway，用户可以方便的通过http接口，push数据到本机的gateway，gateway会帮忙高效率的转发到server端。
 
-falcon-agent，可以在我们的github上找到 https://github.com/open-falcon/agent
+falcon-agent，可以在我们的github上找到 :  https://github.com/open-falcon/agent
 
 # Data model
 ----
 Data Model是否强大，是否灵活，对于监控系统用户的“使用效率”至关重要。比如以zabbix为例，上报的数据为hostname（或者ip）、metric，那么用户添加告警策略、管理告警策略的时候，就只能以这两个维度进行。举一个最常见的场景：
 
-hostA的磁盘空间，小于5%，就告警。一般的服务器上，都会有两个主要的分区，根分区和home分区，在zabbix里面，就得加两条规则；如果是hadoop的机器，一般还会有十几块的数据盘，还得再加10多条规则，这样就会痛苦，不幸福，不利于自动化。
+hostA的磁盘空间，小于5%，就告警。一般的服务器上，都会有两个主要的分区，根分区和home分区，在zabbix里面，就得加两条规则；如果是hadoop的机器，一般还会有十几块的数据盘，还得再加10多条规则，这样就会痛苦，不幸福，不利于自动化（当然zabbix可以通过配置一些自动发现策略来搞定这个，不过比较麻烦）。
 
-open-falcon，采用和opentsdb相同的数据格式：metric加多组key value tags，举两个例子：
+open-falcon，采用和opentsdb相同的数据格式：metric、endpoint加多组key value tags，举两个例子：
 ```
 {
     metric: load.1min,
@@ -99,6 +99,7 @@ transfer转发到judge的每条数据，都会触发相关策略的判定，来�
 
 用户可以很灵活的来配置告警判定策略，比如连续n次都满足条件、连续n次的最大值满足条件、不同的时间段不同的阈值、如果处于维护周期内则忽略 等等。
 
+另外也支持突升突降类的判定和告警。
 
 # Query
 ----
@@ -183,12 +184,13 @@ c.RRA("MIN", 0.5, 720, 730)
 # Contributors
 ----
 - 近期我们会把绝大数的组件整理到 http://github.com/open-falcon ， 期待大家一起贡献，推动，做最开放、最好用的企业级监控系统。
+- QQ群：373249123
 
 # TODO
 ----
 - metric的聚合
 - 环比、同比报警判定
-- 流量的突升突降判定
+- 流量的突升突降判定 （done）
 
 # License
 ----
