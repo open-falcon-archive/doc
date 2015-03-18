@@ -1,5 +1,5 @@
 # Introduction
-----
+
 监控系统是整个运维环节，乃至整个产品生命周期中最重要的一环，事前及时预警发现故障，事后提供翔实的数据用于追查定位问题。监控系统作为一个成熟的运维产品，业界有很多开源的实现可供选择。当公司刚刚起步，业务规模较小，运维团队也刚刚建立的初期，选择一款开源的监控系统，是一个省时省力，效率最高的方案。之后，随着业务规模的持续快速增长，监控的对象也越来越多，越来越复杂，监控系统的使用对象也从最初少数的几个SRE，扩大为更多的DEVS，SRE。这时候，监控系统的容量和用户的“使用效率”成了最为突出的问题。
 
 监控系统业界有很多杰出的开源监控系统。我们在早期，一直在用zabbix，不过随着业务的快速发展，以及互联网公司特有的一些需求，现有的开源的监控系统在性能、扩展性、和用户的使用效率方面，已经无法支撑了。
@@ -9,7 +9,7 @@
 **open-falcon的目标是做最开放、最好用的互联网企业级监控产品。**
 
 # Highlights and features
-----
+
 - 强大灵活的数据采集：自动发现，支持falcon-agent、snmp、支持用户主动push、用户自定义插件支持、opentsdb data model like（timestamp、endpoint、metric、key-value tags）
 - 水平扩展能力：支持每个周期上亿次的数据采集、告警判定、历史数据存储和查询
 - 高效率的告警策略管理：高效的portal、支持策略模板、模板继承和覆盖、多种告警方式、支持callback调用
@@ -21,7 +21,7 @@
 - 开发语言： 整个系统的后端，全部golang编写，portal和dashboard使用python编写。
 
 # Architecture
-----
+
 ![open-falcon architecture](http://upload-images.jianshu.io/upload_images/3678-502bbef299826b63.png)
 备注：虚线所在的aggregator组件还在设计开发阶段。
 
@@ -45,7 +45,7 @@
 falcon-agent，可以在我们的github上找到 :  https://github.com/open-falcon/agent
 
 # Data model
-----
+
 Data Model是否强大，是否灵活，对于监控系统用户的“使用效率”至关重要。比如以zabbix为例，上报的数据为hostname（或者ip）、metric，那么用户添加告警策略、管理告警策略的时候，就只能以这两个维度进行。举一个最常见的场景：
 
 hostA的磁盘空间，小于5%，就告警。一般的服务器上，都会有两个主要的分区，根分区和home分区，在zabbix里面，就得加两条规则；如果是hadoop的机器，一般还会有十几块的数据盘，还得再加10多条规则，这样就会痛苦，不幸福，不利于自动化（当然zabbix可以通过配置一些自动发现策略来搞定这个，不过比较麻烦）。
@@ -75,7 +75,7 @@ open-falcon，采用和opentsdb相同的数据格式：metric、endpoint加多�
 备注：endpoint是一个特殊的tag。
 
 # Data collection
-----
+
 transfer，接收客户端发送的数据，做一些数据规整，检查之后，转发到多个后端系统去处理。在转发到每个后端业务系统的时候，transfer会根据一致性hash算法，进行数据分片，来达到后端业务系统的水平扩展。
 
 transfer 提供jsonRpc接口和telnet接口两种方式，transfer自身是无状态的，挂掉一台或者多台不会有任何影响，同时transfer性能很高，每分钟可以转发超过500万条数据。
@@ -90,7 +90,7 @@ transfer的数据来源，一般有三种：
 说明：上面这三种数据，都会先发送给本机的proxy-gateway，再由gateway转发给transfer。
 
 # Alerting
-----
+
 报警判定，是由judge组件来完成。用户在web portal来配置相关的报警策略，存储在MySQL中。heartbeat server 会定期加载MySQL中的内容。judge也会定期和heartbeat server保持沟通，来获取相关的报警策略。
 
 heartbeat sever不仅仅是单纯的加载MySQL中的内容，根据模板继承、模板项覆盖、报警动作覆盖、模板和hostGroup绑定，计算出最终关联到每个endpoint的告警策略，提供给judge组件来使用。
@@ -102,7 +102,7 @@ transfer转发到judge的每条数据，都会触发相关策略的判定，来�
 另外也支持突升突降类的判定和告警。
 
 # Query
-----
+
 到这里，数据已经成功的存储在了graph里。如何快速的读出来呢，读过去1小时的，过去1天的，过去一月的，过去一年的，都需要在1秒之内返回。
 
 这些都是靠graph和query组件来实现的，transfer会将数据往graph组件转发一份，graph收到数据以后，会以rrdtool的数据归档方式来存储，同时提供查询RPC接口。
@@ -110,7 +110,7 @@ transfer转发到judge的每条数据，都会触发相关策略的判定，来�
 query面向终端用户，收到查询请求后，会去多个graph里面，查询不同metric的数据，汇总后统一返回给用户。
 
 # Dashboard
-----
+
 
 dashboard首页，用户可以以多个维度来搜索endpoint列表，即可以根据上报的tags来搜索关联的endpoint。
 ![open-falcon  dashboard homepage](http://upload-images.jianshu.io/upload_images/3678-57753ccac6dff8f8.png)
@@ -123,7 +123,7 @@ dashboard首页，用户可以以多个维度来搜索endpoint列表，即可以
 
 
 # Web portal
-----
+
 一个高效的portal，对于提升用户的“使用效率”，加成很大，平时大家都这么忙，能给各位SRE、Devs减轻一些负担，那是再好不过了。
 
 这是host group的管理页面，可以和服务树结合，机器进出服务树节点，相关的模板会自动关联或者解除。这样服务上下线，都不需要手动来变更监控，大大提高效率，降低遗漏和误报警。
@@ -139,7 +139,7 @@ dashboard首页，用户可以以多个维度来搜索endpoint列表，即可以
 ![open-falcon add an expression](http://upload-images.jianshu.io/upload_images/3678-9b636e99d19df16d.png)
 
 # Storage
-----
+
 对于监控系统来讲，历史数据的存储和高效率查询，永远是个很难的问题！
 1. 数据量大：目前我们的监控系统，每个周期，大概有2000万次数据上报（上报周期为1分钟和5分钟两种，各占50%），一天24小时里，从来不会有业务低峰，不管是白天和黑夜，每个周期，总会有那么多的数据要更新。
 2. 写操作多：一般的业务系统，通常都是读多写少，可以方便的使用各种缓存技术，再者各类数据库，对于查询操作的处理效率远远高于写操作。而监控系统恰恰相反，写操作远远高于读。每个周期几千万次的更新操作，对于常用数据库（MySQL、postgresql、mongodb）都是无法完成的。
@@ -176,24 +176,24 @@ c.RRA("MIN", 0.5, 720, 730)
 对于原始数据，transfer会打一份到hbase，也可以直接使用opentsdb，transfer支持往opentsdb写入数据。
 
 # Committers
-----
-              
+
+  
 - laiwei:  https://github.com/laiwei     来炜没睡醒@微博 / hellolaiwei@微信
 - 秦晓辉: https://github.com/ulricqin  Ulricqin@微博 cnperl@微信
 
 # Contributors
-----
+
 - 近期我们会把绝大数的组件整理到 http://github.com/open-falcon ， 期待大家一起贡献，推动，做最开放、最好用的企业级监控系统。
 - QQ群：373249123
 
 # TODO
-----
+
 - metric的聚合
 - 环比、同比报警判定
 - 流量的突升突降判定 （done）
 
 # License
-----
+
 Copyright 2014-2015 Xiaomi, Inc.
 Licensed under the Apache License,
 Version 2.0:
