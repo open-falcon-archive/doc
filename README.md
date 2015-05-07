@@ -28,6 +28,8 @@
   
 - laiwei:  https://github.com/laiwei     来炜没睡醒@微博 / hellolaiwei@微信
 - 秦晓辉: https://github.com/ulricqin  Ulricqin@微博 cnperl@微信
+- yubo: https://github.com/yubo x80386@微信
+- 聂安: https://github.com/niean 
 
 # Contributors
 
