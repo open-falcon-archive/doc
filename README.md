@@ -1,6 +1,5 @@
 # Wiki
-- https://open-falcon.github.io
-- https://github.com/open-falcon/doc/wiki
+- http://book.open-falcon.com
 
 
 # License
